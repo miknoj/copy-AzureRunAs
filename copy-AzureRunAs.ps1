@@ -60,7 +60,8 @@
 		New-AzureRmAutomationCertificate -ResourceGroupName $targetResourceGroup -AutomationAccountName $targetAutomationAccount -Name $certName -Path $certFile -Exportable -Password $certPassword
 		Write-Output "Import Complete"
 		Write-Output "Creating Connection..."
-		$connectionFieldValues = @{"ApplicationId" = $servicePrincipalConnection.ApplicationId; "TenantId" = $servicePrincipalConnection.TenantId; "CertificateThumbprint" = $thumbprint; "SubscriptionId" = (Get-AzureRmContext).Subscription.Id}
+		$subId = $servicePrincipalConnection.SubscriptionId
+		$connectionFieldValues = @{"ApplicationId" = $servicePrincipalConnection.ApplicationId; "TenantId" = $servicePrincipalConnection.TenantId; "CertificateThumbprint" = $thumbprint; "SubscriptionId" = $subId}
 		New-AzureRmAutomationConnection -ResourceGroupName $targetResourceGroup -AutomationAccountName $targetAutomationAccount -Name $connName -ConnectionTypeName $connType -ConnectionFieldValues $connectionFieldValues
 		Write-Output "Connection Created"
 	} else {
